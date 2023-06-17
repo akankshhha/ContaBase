@@ -1,3 +1,28 @@
 {
-  "contacts": []
+  "contacts": [
+    {
+      "fname": "Monkey",
+      "lname": "D Luffy",
+      "status": "active",
+      "id": 1
+    },
+    {
+      "fname": "Nami",
+      "lname": "Nami",
+      "status": "inactive",
+      "id": 3
+    },
+    {
+      "fname": "Nami",
+      "lname": "Nami",
+      "status": "active",
+      "id": 4
+    },
+    {
+      "fname": "Prajwal ",
+      "lname": "S",
+      "status": "active",
+      "id": 5
+    }
+  ]
 }

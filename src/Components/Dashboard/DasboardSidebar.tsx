@@ -1,6 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom';
-import brandName from '../Assets/brandName1.png'
+import brandName from '../../Assets/brandName1.png'
 
 const Sidebar = () => {
   const sidebarList = [
@@ -14,7 +14,7 @@ const Sidebar = () => {
     }
   ]
   return (
-    <div className='h-screen w-[18rem] bg-[#F9FAFB] border-r border-[#dedede]'>
+    <div className='h-screen w-[18rem] bg-[#F9FAFB] border-r border-[#dedede] sticky top-0'>
       <img src={brandName} alt='brand' className='w-24 h-24 mx-auto mt-6'/>
   
       <nav className='flex flex-col text-center mt-6'>

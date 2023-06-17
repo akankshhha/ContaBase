@@ -1,13 +1,21 @@
 import React from 'react'
-import {deleteContact} from '../../../Services/contactService'
+import { useDispatch } from 'react-redux'
+import { deleteContact, updateContact, selectedContact } from '../../../Redux/contactSlice'
+import { useNavigate } from 'react-router-dom'
 
 const ContactCard = (props: any) => {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
-  const handleDeletion = (id:any) => {
-    deleteContact(props.id)
-    console.log(props.id);
-    props.setContacts(props.contacts.filter((item:any) => item.id = id))
+  const handleDeletion = () => {
+    dispatch(deleteContact({id: props.id}))
+    console.log('me deletes');
   }
+
+  const handleRedirect = () => {
+    navigate(`/updateContact/${props.id}`)
+  }
+
 
 
   return (
@@ -17,15 +25,13 @@ const ContactCard = (props: any) => {
       </div>
       <div className='mt-4 font-semibold'>
         <h1>{props.firstName} {props.lastName}</h1>
-        <h1 className='text-xs'>{props.status}</h1>
+        <h1 className={props.status === 'active' ? 'text-xs text-green-700' : 'text-xs text-red-700'}>{props.status}</h1>
       </div>
       
       <div className='flex justify-center gap-4 mt-3 text-xs w-24 m-auto font-medium'>
-        <button className='bg-blue-200 py-2 px-4 rounded-md text-black '>Edit</button>
-        <button className='bg-red-300 py-2 px-4 rounded-md' onClick={() =>handleDeletion(props.id)}>Delete</button>
+        <button className='bg-blue-200 py-2 px-4 rounded-md text-black' onClick={handleRedirect}>Edit</button>
+        <button className='bg-red-300 py-2 px-4 rounded-md' onClick={() => handleDeletion()}>Delete</button>
       </div>
-
-     
     </div>
   )
 }

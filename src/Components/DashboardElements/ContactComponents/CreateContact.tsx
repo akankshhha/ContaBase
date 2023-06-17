@@ -1,21 +1,31 @@
-import { useState } from 'react'
-import { addContact } from '../../../Services/contactService'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { addNewContact, updateContact, selectedContact  } from '../../../Redux/contactSlice'
+import { useParams } from 'react-router-dom'
 
 const CreateContact = ({ setShowComponent }: any) => {
+  const {contact} = useSelector((state: any) => state.contacts)
+  if(contact) console.log(contact)
+  const dispatch = useDispatch()
+  const {id} = useParams()
 
   const [formData, setFormData] = useState({
     fname: '',
     lname: '',
     status: ''
   })
-
+  
+  useEffect(() => {
+    dispatch(selectedContact({id:id}))
+    setFormData(contact)
+  }, [id, contact])
+  
   const handleButtonClick = () => {
-    setShowComponent(true)
+    setShowComponent('contactList')
   }
 
-  const handleCreation = () => {
-    console.log("Contact created!")
-    addContact(formData)
+  const handleUpdation = () => {
+    console.log("Update function works!");
     setFormData({
       fname: '',
       lname: '',
@@ -23,12 +33,25 @@ const CreateContact = ({ setShowComponent }: any) => {
     })
   }
 
+  const handleCreation = () => {
+    console.log("Contact created!")
+    setFormData({
+      fname: '',
+      lname: '',
+      status: ''
+    })
+    dispatch(addNewContact({
+      fname: formData.fname, 
+      lname: formData.lname, 
+      status: formData.status
+    }))
+  }
+
   const handleFormChange = (event: any) => {
     setFormData({
       ...formData,
       [event.target.name]: event.target.value
     })
-    console.log(formData)
   }
   return (
     <div className='text-center'>
@@ -81,10 +104,15 @@ const CreateContact = ({ setShowComponent }: any) => {
           </div>
 
         </div>.
-
-        <button type='submit' onClick={handleCreation} className='bg-[#2065D1] text-white font-medium px-4 py-2 rounded-md text-sm mt-4'>
+      <div className='flex justify-between mx-5'>
+      <button type='submit' onClick={handleCreation} className='bg-[#2065D1] text-white font-medium px-4 py-2 rounded-md text-sm mt-4'>
           Create Contact
         </button>
+        <button type='submit' onClick={handleUpdation} className='bg-green-900 text-white font-medium px-4 py-2 rounded-md text-sm mt-4'>
+          Update
+        </button>
+      </div>
+       
       </div>
       <button onClick={handleButtonClick} className='text-sm font-semibold bg-white border border-[#cecece] mt-4 px-4 py-2 rounded-md'>View Contact Details</button>
     </div>

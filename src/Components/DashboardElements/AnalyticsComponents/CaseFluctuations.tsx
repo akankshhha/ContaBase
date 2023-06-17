@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { getCaseFluctuations } from '../../../Services/covidCasesService'
+import {useQuery} from '@tanstack/react-query'
+
 import {
     LineChart,
     Line,
@@ -11,13 +11,15 @@ import {
 } from 'recharts';
 
 const CaseFluctuations = () => {
-    const [covidData, setCovidData] = useState<any>([])
+ 
+    const {data} = useQuery(['caseData'], async () => {
+        const res = await fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=all");
+        console.log(res);
+        const result = res.json();
+        return await result;
+      },)
 
-    useEffect(() => {
-        getCaseFluctuations().then((data: any) => setCovidData(data))
-    }, [])
-
-    const covidDataArray = covidData.cases ? Object.entries(covidData.cases).map(([date, value]) => ({
+    const covidDataArray = data?.cases ? Object.entries(data.cases).map(([date, value]) => ({
         date: new Date(date).toISOString().slice(0, 10),
         cases: value
     })) : []
@@ -39,7 +41,7 @@ const CaseFluctuations = () => {
                     type="monotone"
                     dataKey="cases"
                     stroke="#8884d8"
-                    activeDot={{ r: 4 }}
+                    activeDot={{ r: 2 }}
                 />
                 <Tooltip label='Cases' />
                 <Legend />
